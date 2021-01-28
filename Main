@@ -1,3 +1,9 @@
+Ира - экспорт, импорт
+Катя - поиск
+Яна - удаление и чистка от ненужного
+
+
+
 #include <iostream>
 #include <map>
 #include <string>
