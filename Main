@@ -7,6 +7,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+
 using namespace std;
 
 enum Groups
@@ -26,7 +27,6 @@ struct HumanData
 	BirthDay bDay;
 	Groups group;
 	map<string, bool> phoneNumbers;
-	string comment;
 };
 
 void InputPhoneBook(map<string, HumanData>& phoneBook)
@@ -40,7 +40,7 @@ void InputPhoneBook(map<string, HumanData>& phoneBook)
 	cout << "2. Введите имя человека - "; cin >> human.name.firstName;
 	cout << "3. Введите отчество человека - "; cin >> human.name.patronName;
 
-	cout << "7. Введите группу, к которой человек относится\n(1 - студент, 2 - есть работа, 3 - нет работы) - "; cin >> groupTemp;
+	cout << "4. Введите группу, к которой человек относится\n(1 - студент, 2 - есть работа, 3 - нет работы) - "; cin >> groupTemp;
 	if (groupTemp == 1) {
 		human.group = Groups::student;
 	}
@@ -112,7 +112,7 @@ void ShowPhoneBook(map<string, HumanData> phoneBook)
 
 int main()
 {
-	setlocale(LC_ALL, "Rus");
+	system("chcp 65001");
 	map<string, HumanData> phoneBook;
 	int var;
 
