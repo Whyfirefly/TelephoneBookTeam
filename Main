@@ -1,0 +1,158 @@
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+
+enum Groups
+{
+	student, worker, unworker
+};
+
+struct FullName
+{
+	string firstName;
+	string patronName; //отчество
+};
+
+struct BirthDay
+{
+	int day;
+	int month;
+	int year;
+};
+
+struct HumanData
+{
+	FullName name;
+	BirthDay bDay;
+	Groups group;
+	map<string, bool> phoneNumbers;
+	string comment;
+};
+
+void InputPhoneBook(map<string, HumanData>& phoneBook)
+{
+	HumanData human;
+	string lastName;
+	short int groupTemp;
+	bool flag = false;
+	cout << "\n\n\t+++Заполнение+++\n\n";
+	cout << "1. Введите фамилию человека - "; cin >> lastName;
+	cout << "2. Введите имя человека - "; cin >> human.name.firstName;
+	cout << "3. Введите отчество человека - "; cin >> human.name.patronName;
+	cout << "4. Введите день рождения человека - "; cin >> human.bDay.day;
+	cout << "5. Введите месяц рождения человека - "; cin >> human.bDay.month;
+	cout << "6. Введите год рождения человека - "; cin >> human.bDay.year;
+
+	cout << "7. Введите группу, к которой человек относится\n(1 - студент, 2 - есть работа, 3 - нет работы) - "; cin >> groupTemp;
+	if (groupTemp == 1) {
+		human.group = Groups::student;
+	}
+	else if (groupTemp == 2) {
+		human.group = Groups::worker;
+	}
+	else if (groupTemp == 3) {
+		human.group = Groups::unworker;
+	}
+
+	cout << "8. ";
+	while (!flag)
+	{
+		cout << "Введите номер телефона - ";
+		string phoneNumber;
+		bool active;
+
+		cin >> phoneNumber;
+		cout << "Этот номер активен? (1 - да, 0 - нет) - ";
+		cin >> active;
+
+		human.phoneNumbers.insert(pair<string, bool>(phoneNumber, active));
+
+		cout << "Это последний номер? (1 - да, 0 - нет) - ";
+		cin >> flag;
+	}
+
+	cout << "9. Введите комментарий по этому человеку - "; cin >> human.comment;
+
+
+	phoneBook.insert(pair<string, HumanData>(lastName, human));
+}
+
+void ShowPhoneBook(map<string, HumanData> phoneBook)
+{
+	int i = 1;
+	cout << "\n\n\t+++Список людей+++\n\n";
+	for (auto element : phoneBook) {
+		cout << "\n\n\tHuman # " << i;
+		cout << "\n\n1. ФИО - " << element.first << " " << element.second.name.firstName << " " << element.second.name.patronName << endl;
+		cout << "2. Дата рождения - " << element.second.bDay.day << "." << element.second.bDay.month << "." << element.second.bDay.year << endl;
+		cout << "3. Группа - ";
+		if (element.second.group == Groups::student)
+		{
+			cout << "студент" << endl;
+		}
+		else if (element.second.group == Groups::worker) {
+			cout << "работник" << endl;
+		}
+		else if (element.second.group == Groups::unworker) {
+			cout << "безработный" << endl;
+		}
+
+		cout << "4. Список номеров:\n";
+		for (auto num : element.second.phoneNumbers)
+		{
+			cout << num.first;
+			if (num.second){
+				cout << " - активный" << endl;
+			}
+			else {
+				cout << " - неактивный" << endl;
+			}
+		}
+		cout << "5. Комментарий - " << element.second.comment << endl;
+		i++;
+	}
+    cout << "\n\n\n\t+++Конец списка+++\n\n";
+}
+
+
+int main()
+{
+	setlocale(LC_ALL, "Rus");
+	map<string, HumanData> phoneBook;
+	int var;
+
+	cout << "\n\n\t+++Телефонная книга+++\n\n";
+	again:
+	cout << "\n\nМеню:\n\n1. Добавить человека;\n2. Посмотреть список;\n3. Выход.\n\nВыберите пункт - "; cin >> var;
+	switch (var)
+	{
+	case 1:
+	{
+		bool _flag = false;
+		while (!_flag)
+		{
+			InputPhoneBook(phoneBook);
+			cout << "\nЗавершить добавление людей в список? (1 - да, 0 - нет) - "; cin >> _flag;
+		}
+		goto again;
+		break;
+	}
+	case 2:
+		ShowPhoneBook(phoneBook);
+		goto again;
+		break;
+	case 3:
+	{
+		cout << "\n\n\nЗавершение работы...";
+		exit(0);
+		break;
+	}
+	default:
+	{
+		cout << "\nВы неверно выбрали пункт, попробуйте снова.";
+		goto again;
+		break;
+	}
+	}
+}
