@@ -1,0 +1,38 @@
+
+void importStudent (vector<Student>& students){
+    string file;
+    cin>>file;
+    ofstream student;
+    student.open(file, ofstream::app);
+    student.open(file);
+    if (!student.is_open()) {
+        cout << "Ошибка. Введите файл правильно!" << endl;
+    }
+    else
+    {
+        student << "Данные файла!"<<endl;
+    }
+    student.close();
+}
+
+void exportStudent (vector<Student>& students){
+    string file;
+    cout<<"Введите файл"<<endl;
+    cin>>file;
+    ifstream student;
+    student.open(file);
+
+    if (!student.is_open()) {
+        cout << "Ошибка. Введите файл правильно!" << endl;
+    }
+    else
+    {
+        student << "Данные файла!"<<endl;
+        string fill;
+        while (!student.eof()){
+            fill="";
+           getline(student,fill);
+            cout<<fill<<endl;
+        }
+    }
+    student.close();
