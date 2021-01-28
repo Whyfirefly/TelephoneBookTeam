@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+#include <map>
+using namespace std;
+
+struct Person {
+    string name;
+    string lastName;
+    string phoneNumber;
+    string birthDate;
+    string group;
+    bool isActive;
+    string comment;
+};
+
+
+void AddPerson(map<string, Person>& phoneBook){
+    Person person;
+    string lastName;
+    cout << "1. Enter the lastname - "; cin >> lastName;
+    person.lastName = lastName;
+    cout << "2. Enter the name - "; cin >> person.name;
+    cout << "3. Enter the phone number - "; cin >> person.phoneNumber;
+    cout << "4. Enter the birth date - "; cin >> person.birthDate;
+    cout << "5. Enter the group - "; cin >> person.group;
+    cout << "6. Is active, 1 - yes, 2 - no! - "; cin >> person.isActive;
+    cout << "7. Comment - "; cin >> person.comment;
+    phoneBook.insert(make_pair(lastName, person));
+
+}
+
+
+void ShowAll(map<string, Person> phoneBook) {
+
+    for (auto item : phoneBook) {
+        cout << endl;
+        cout << item.first << " "
+             << item.second.name << " "
+             << item.second.phoneNumber << " "
+             << item.second.birthDate << " "
+             << item.second.group << " "
+             << item.second.isActive << " "
+             << item.second.comment << endl;
+    }
+}
+
+void FindSomebody(map<string, Person> phoneBook) {
+
+    string key;
+    cout << "Who do you wont to find?" << endl;
+    cin >> key;
+    auto iterator = phoneBook.find(key);
+    cout << iterator -> second.lastName << ""
+         << iterator -> second.name << " "
+         << iterator -> second.phoneNumber << " "
+         << iterator -> second.birthDate << " "
+         << iterator -> second.group << " "
+         << iterator -> second.isActive << " "
+         << iterator -> second.comment << endl;
+}
+
+map<string , Person> phoneBook;  //И кто мне это запретит?
+
+int main()
+{
+
+    int menu;
+    cout << "Choose something - " << endl;
+    cout << "To add somebody press [1]" << endl;
+    cout << "To show all press [2]" << endl;
+    cout << "To find somebody press [3]" << endl;
+    cin >> menu;
+
+    switch (menu) {
+
+        case 1:
+            AddPerson(phoneBook);
+            return main();
+
+        case 2:
+            ShowAll(phoneBook);
+            return main();
+
+        case 3:
+            FindSomebody(phoneBook);
+            return main();
+
+    }
+
+}
