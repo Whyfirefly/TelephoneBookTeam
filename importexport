@@ -1,38 +1,40 @@
 
-void importStudent (vector<Student>& students){
+void ExportPhoneBook (map<string , Person> phoneBook){
     string file;
     cin>>file;
-    ofstream student;
-    student.open(file, ofstream::app);
-    student.open(file);
-    if (!student.is_open()) {
+    ofstream phoneBook;
+    phoneBook.open(file, ofstream::app);
+    phoneBook.open(file);
+    if (!phoneBook.is_open()) {
         cout << "Ошибка. Введите файл правильно!" << endl;
     }
     else
     {
-        student << "Данные файла!"<<endl;
+       phoneBook << "Данные файла!"<<endl;
     }
-    student.close();
+    phoneBook.close();
+  
 }
 
-void exportStudent (vector<Student>& students){
+void ImportPhoneBook (map<string , Person> phoneBook){
     string file;
     cout<<"Введите файл"<<endl;
     cin>>file;
-    ifstream student;
-    student.open(file);
+    ifstream phoneBook;
+   phoneBook.open(file);
 
-    if (!student.is_open()) {
+    if (!phoneBook.is_open()) {
         cout << "Ошибка. Введите файл правильно!" << endl;
     }
     else
     {
-        student << "Данные файла!"<<endl;
+       phoneBook << "Данные файла!"<<endl;
         string fill;
-        while (!student.eof()){
+        while (!phoneBook.eof()){
             fill="";
-           getline(student,fill);
+           getline(phoneBook,fill);
             cout<<fill<<endl;
         }
     }
-    student.close();
+    phoneBook.close();
+    }
