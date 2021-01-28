@@ -14,13 +14,6 @@ struct FullName
 	string patronName; //отчество
 };
 
-struct BirthDay
-{
-	int day;
-	int month;
-	int year;
-};
-
 struct HumanData
 {
 	FullName name;
@@ -40,9 +33,6 @@ void InputPhoneBook(map<string, HumanData>& phoneBook)
 	cout << "1. Введите фамилию человека - "; cin >> lastName;
 	cout << "2. Введите имя человека - "; cin >> human.name.firstName;
 	cout << "3. Введите отчество человека - "; cin >> human.name.patronName;
-	cout << "4. Введите день рождения человека - "; cin >> human.bDay.day;
-	cout << "5. Введите месяц рождения человека - "; cin >> human.bDay.month;
-	cout << "6. Введите год рождения человека - "; cin >> human.bDay.year;
 
 	cout << "7. Введите группу, к которой человек относится\n(1 - студент, 2 - есть работа, 3 - нет работы) - "; cin >> groupTemp;
 	if (groupTemp == 1) {
@@ -71,8 +61,6 @@ void InputPhoneBook(map<string, HumanData>& phoneBook)
 		cout << "Это последний номер? (1 - да, 0 - нет) - ";
 		cin >> flag;
 	}
-
-	cout << "9. Введите комментарий по этому человеку - "; cin >> human.comment;
 
 
 	phoneBook.insert(pair<string, HumanData>(lastName, human));
