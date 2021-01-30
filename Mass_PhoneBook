@@ -1,0 +1,256 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+// Максимальное число возможно вносимых контактов - размер массива
+const int MAX_NAMES = 100;
+
+// Имя файла, который будет содержать контакты
+const string PHONEBOOK_FILENAME = "phonebook.csv";
+
+enum Groups
+{
+    family, friends, collega
+};
+
+
+struct Persona
+{
+    string firstname;
+    string lastname;
+    string patronymic;
+    string phone;
+    Groups group;
+
+    bool Matches(string x)
+    {
+        return (firstname.find(x) != string::npos);
+    }
+
+};
+
+// Считываем все контакты из файла (это как импорт данных в систему из файла)
+// [out] people - Массив, который содержит все контакты
+// [out] num_people - Количество контактов в файле
+void ReadAllPeople(Persona people[], int &num_people)
+{
+    ifstream fin;
+    fin.open(PHONEBOOK_FILENAME.c_str(), ios::app);
+    if (fin.fail())
+    {
+        cout << "Файл не открывается." << PHONEBOOK_FILENAME << endl;
+        return;
+    }
+
+    int i = 0;
+    getline(fin, people[i].firstname);
+    getline(fin, people[i].lastname);
+    getline(fin, people[i].patronymic);
+
+    while (!fin.eof() && i < MAX_NAMES)
+    {
+        getline(fin, people[i].phone);
+
+        i++;
+
+        if (i < MAX_NAMES)
+            getline(fin, people[i].firstname);
+        getline(fin, people[i].lastname);
+        getline(fin, people[i].patronymic);
+    }
+
+    num_people = i;
+
+    fin.close();
+}
+
+// Сохраняем все контакты в файле
+// [in] people - Массив для записи в файл
+// [in] num_people - Кол-во контактов в массиве
+void SaveToFile(const Persona people[], int num_people)
+{
+    ofstream fout;
+
+    fout.open(PHONEBOOK_FILENAME.c_str());
+
+    for(int i = 0; i < num_people; i++)
+    {
+        fout << people[i].firstname << " ";
+        fout << people[i].lastname << " ";
+        fout << people[i].patronymic << endl;
+        fout << people[i].phone << endl;
+        fout << people[i].group << endl;
+    }
+
+}
+
+// Добавление контакта в тел книгу
+// [in] person - Контакт,который доьавляем в файл
+void AppendToFile(Persona person)
+{
+    ofstream fin;
+    fin.open(PHONEBOOK_FILENAME.c_str(),ios::app);
+
+    fin << person.firstname << endl;
+    fin << person.lastname << endl;
+    fin << person.patronymic << endl;
+    fin <<person.phone << endl;
+    fin << person.group << endl;
+
+    fin.close();
+}
+
+// Добавляем ФИО, телефона и группы
+// в массив, затем сохраняем контакт ,используя функцию AppendToFile.
+// [in/out] people - Массив для добавления нового контакта
+// [in/out] num_people - Кол-во внесенных контактов
+void AddName(Persona people[], int &num_people)
+{
+    Persona person;
+    short int groupTemp;
+
+    cout <<"\nВведите имя: ";
+    getline(cin, person.firstname);
+
+    cout <<"Введите фамилию: ";
+    getline(cin, person.lastname);
+
+    cout <<"Введите отчество: ";
+    getline(cin, person.patronymic);
+
+    cout <<"Введите номер телефона: ";
+    getline(cin, person.phone);
+
+
+    cout << "Выберите группу, к которой человек относится\n(1 - семья, 2 - друзья, 3 - коллеги) - "; cin >> groupTemp;
+    if (groupTemp == 1) {
+        person.group = Groups::family;
+    }
+    else if (groupTemp == 2) {
+        person.group = Groups::friends;
+    }
+    else if (groupTemp == 3) {
+        person.group = Groups::collega;
+    }
+
+    for(int i = 0; i < num_people; i++)
+    {
+        if( i + 1  == num_people)
+            people[num_people] = person;
+    }
+    num_people++;
+
+    AppendToFile(person);
+    cout <<"Контакт был добавлен в телефонную книгу. "<<endl;
+
+    SaveToFile(people,num_people);
+    cout <<"Контакт был сохранён в телефонную книгу. ";
+
+}
+
+// Изменение контакта, поиск в массиве и
+// изменение номера телефона. Затем сохраняем новые данные в файл
+// используя вызов функции SaveToFile.
+// [in/out] people - Массив, содержащий контакты
+// [in]	 num_people - Кол-во людей в массиве
+void ChangePhone(Persona people[], int num_people)
+{
+    Persona person;
+    int count;
+
+    cout <<"Введите имя человека, телефонный номер которого хотите изменить: ";
+    getline(cin, person.firstname);
+
+    for(count = 0; count < num_people; count++)
+    {
+        if(people[count].Matches(person.firstname))
+        {	cout << endl << people[count].firstname << endl;
+
+            cout <<"Текущий номер: "<<people[count].phone;
+
+            cout << "\nВведите новый номер: ";
+            getline(cin, people[count].phone);
+
+            return;
+        }
+
+    }
+
+    if(count = num_people)
+        cout <<"\nИмя не найдено.";
+
+}
+
+// Поиск контакта и показ всех контактов
+// из массива
+// [in] people - Массив, содержащий контакты
+// [in] num_people - кол-во людей в массиве
+void FindName(Persona people[], int num_people) {
+
+    Persona person;
+    int count;
+
+    cout << "Введите имя контакта, которого хотите найти: ";
+    getline(cin, person.firstname);
+
+    for (count = 0; count < num_people; count++) {
+        if (people[count].Matches(person.firstname)) {
+            cout << endl << people[count].firstname << " " << people[count].lastname << " " << people[count].patronymic << endl;
+            cout << "Группа: " << people[count].group;
+            cout << "Номер: " << people[count].phone;
+        }
+    }
+}
+
+// Отображение всех контактов
+// [in] people - Массив, содержащий контакты
+// [in] num_people - кол-во людей в массиве
+void ListAllNames(const Persona people[], int num_people) {
+    cout << "\n\nСписок контактов: \n";
+    for (int i = 0; i < num_people; i++)
+        cout << "Группа: " << people[i].group << endl << "ФИО:\n" << people[i].firstname << " " << people[i].lastname << " " << people[i].patronymic << " - "
+             << people[i].phone << endl;
+}
+
+int main() {
+    system("chcp 65001");
+    Persona people[MAX_NAMES];
+    int num_people;
+
+    // Get records from file
+    ReadAllPeople(people, num_people);
+
+    char choice;
+
+    cout << "\nДобро пожаловать в справочник.\n";
+    do {
+        cout << "\nA - Добавить контакт\n";
+        cout << "C - Изменить номер телефона\n";
+        cout << "F - Найти контакт\n";
+        cout << "L - Отобразить список контактов\n";
+        cout << "Q - Выход\n\n";
+        cout << "Выберите опцию: ";
+        cin >> choice;
+        cin.get();   // Read EOL
+
+        choice = toupper(choice);
+
+        switch (choice) {
+            case 'A':
+                AddName(people, num_people);
+                break;
+            case 'C':
+                ChangePhone(people, num_people);
+                break;
+            case 'F':
+                FindName(people, num_people);
+                break;
+            case 'L':
+                ListAllNames(people, num_people);
+                break;
+        }
+    } while (choice != 'Q' && choice != 'q');
+}
