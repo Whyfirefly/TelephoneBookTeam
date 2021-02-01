@@ -125,14 +125,14 @@ void AddName(Persona people[], int &num_people)
     getline(cin, person.phone);
 
 
-    cout << "Выберите группу, к которой человек относится\n(1 - семья, 2 - друзья, 3 - коллеги) - "; cin >> groupTemp;
-    if (groupTemp == 1) {
+   cout << "Выберите группу, к которой человек относится\n(F - семья, D - друзья, C - коллеги) - "; cin >> groupTemp;
+    if (groupTemp = 'F') {
         person.group = Groups::family;
     }
-    else if (groupTemp == 2) {
+    else if (groupTemp == 'D') {
         person.group = Groups::friends;
     }
-    else if (groupTemp == 3) {
+    else if (groupTemp == 'C') {
         person.group = Groups::collega;
     }
 
