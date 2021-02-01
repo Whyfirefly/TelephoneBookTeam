@@ -146,8 +146,7 @@ void AddName(Persona people[], int &num_people)
     AppendToFile(person);
     cout <<"Контакт был добавлен в телефонную книгу. "<<endl;
 
-    SaveToFile(people,num_people);
-    cout <<"Контакт был сохранён в телефонную книгу. ";
+  
 
 }
 
